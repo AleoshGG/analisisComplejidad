@@ -156,14 +156,14 @@ btnOrdenar.addEventListener("click", () => {
     }`
   );
 
-  //llenarListas()
+  llenarListas()
 
-  /* console.log(
+  console.log(
     `Tiempo en segundos funcion ORDENAR BUBBLE list ${lLB.bubbleSort()}`
-  ); */
+  ); 
 
   const startTimeML = performance.now();
-  lL.mergeSort();
+  lLM.mergeSort();
   const endTimeML = performance.now();
   console.log(
     `Tiempo en segundos funcion ORDENAR MERGE list ${
@@ -176,7 +176,7 @@ btnOrdenar.addEventListener("click", () => {
   } */
 
     const startTimeRL = performance.now();
-    lLM.radixSort();
+    lLR.radixSort();
     const endTimeRL = performance.now();
     console.log(
       `Tiempo en segundos funcion ORDENAR RADIX list ${

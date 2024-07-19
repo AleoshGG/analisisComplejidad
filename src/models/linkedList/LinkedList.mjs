@@ -68,52 +68,80 @@ export default class LinkedList {
     return executionTime;
   }
 
-  // Merge Sort
   mergeSort() {
-    this.#head = this.mergeSortRec(this.#head);
-  }
+    if (!this.#head || !this.#head.getNext()) return;
 
-  mergeSortRec(head) {
-    if (!head || !head.getNext()) return head;
+    let size = 1;
 
-    const middle = this.getMiddle(head);
-    const nextOfMiddle = middle.getNext();
-    middle.setNext(null);
-
-    const left = this.mergeSortRec(head);
-    const right = this.mergeSortRec(nextOfMiddle);
-
-    return this.sortedMerge(left, right);
-  }
-
-  getMiddle(node) {
-    if (!node) return node;
-
-    let slow = node;
-    let fast = node;
-
-    while (fast.getNext() !== null && fast.getNext().getNext() !== null) {
-      slow = slow.getNext();
-      fast = fast.getNext().getNext();
+    // Encuentra la longitud de la lista
+    let length = 0;
+    let temp = this.#head;
+    while (temp) {
+      length++;
+      temp = temp.getNext();
     }
-    return slow;
+
+    while (size < length) {
+      let dummyHead = new Node(null); // Nodo dummy para simplificar la fusión
+      let tail = dummyHead;
+
+      let current = this.#head;
+
+      while (current) {
+        const left = current;
+        let right = this.split(left, size);
+
+        current = this.split(right, size);
+
+        // Fusiona las listas de tamaño size
+        let merged = this.sortedMerge(left, right);
+        tail.setNext(merged);
+
+        // Mueve el tail al final de la lista fusionada
+        while (tail.getNext()) {
+          tail = tail.getNext();
+        }
+      }
+
+      this.#head = dummyHead.getNext();
+      size *= 2;
+    }
   }
 
+  // Divide la lista en dos partes, regresa la segunda mitad
+  split(node, size) {
+    let i = 1;
+    while (node && i < size) {
+      node = node.getNext();
+      i++;
+    }
+    if (!node) return null;
+
+    let next = node.getNext();
+    node.setNext(null);
+    return next;
+  }
+
+  // Método de fusión
   sortedMerge(left, right) {
-    if (!left) return right;
-    if (!right) return left;
+    let dummyNode = new Node(null);
+    let tail = dummyNode;
 
-    let result = null;
-
-    if (left.getData().review_count <= right.getData().review_count) {
-      result = left;
-      result.setNext(this.sortedMerge(left.getNext(), right));
-    } else {
-      result = right;
-      result.setNext(this.sortedMerge(left, right.getNext()));
+    while (left && right) {
+      if (left.getData().review_count <= right.getData().review_count) {
+        tail.setNext(left);
+        left = left.getNext();
+      } else {
+        tail.setNext(right);
+        right = right.getNext();
+      }
+      tail = tail.getNext();
     }
 
-    return result;
+    if (left) tail.setNext(left);
+    if (right) tail.setNext(right);
+
+    return dummyNode.getNext();
   }
 
   // Radix Sort

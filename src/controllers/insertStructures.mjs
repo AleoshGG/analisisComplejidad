@@ -6,7 +6,7 @@ export const insertToList = async () => {
     const data = await response.json();
 
     const startTime = performance.now();
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 150346; i++) {
       lL.push(data[i]);
     }
     const endTime = performance.now();
@@ -24,7 +24,7 @@ export const insertToArray = async () => {
     const data = await response.json();
 
     const startTime = performance.now();
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 150346; i++) {
       ary.push(data[i]);
     }
     const endTime = performance.now();
