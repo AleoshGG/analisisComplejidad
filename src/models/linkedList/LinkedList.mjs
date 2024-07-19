@@ -16,8 +16,7 @@ export default class LinkedList {
       this.#head = node;
     } else {
       let current = this.#head;
-      while (current.next != null) 
-        current = current.next;
+      while (current.next != null) current = current.next;
       current.next = node;
     }
     this.#count++;
