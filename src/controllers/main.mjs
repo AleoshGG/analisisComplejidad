@@ -1,8 +1,11 @@
 import { insertToArray, insertToList } from "./insertStructures.mjs";
 import { searchToArray, searchToList } from "./searchIn.mjs";
+import { bubleSort, mergeSort, radixSort } from "./arrayOrderBy.mjs";
+import { ary } from "../dependences/structures.mjs";
 
 const btnInsertar = document.getElementById("insertar");
 const btnBuscar = document.getElementById("buscar");
+const btnOrdenar = document.getElementById("ordenar");
 
 btnInsertar.addEventListener("click", async () => {
   btnInsertar.disabled = true;
@@ -36,4 +39,41 @@ btnBuscar.addEventListener("click", () => {
   console.log(
     `Tiempo en segundos funcion BUSCAR array ${dataReturnAry.executionTime / 1000}`
   );
+});
+
+btnOrdenar.addEventListener("click", ()=> {
+  const startTimeB = performance.now()
+  const dataB = bubleSort(ary);
+  const endTimeB = performance.now();
+
+  // for (let i = 0; i < dataB.length; i++) {
+  //   console.log(dataB[i].review_count);
+  // }
+  
+  console.log(
+    `Tiempo en segundos funcion ORDENAR BUBLE array ${(endTimeB - startTimeB) / 1000}`
+  );
+
+  const startTimeM = performance.now()
+  const dataM = mergeSort(ary);
+  const endTimeM = performance.now();
+
+  /* for (let i = 0; i < dataM.length; i++) {
+    console.log(dataM[i].review_count);
+  } */
+  console.log(
+    `Tiempo en segundos funcion ORDENAR MERGE array ${(endTimeM - startTimeM) / 1000}`
+  );
+
+  const startTimeR = performance.now()
+  const dataR = radixSort(ary);
+  const endTimeR = performance.now();
+
+  /* for (let i = 0; i < dataR.length; i++) {
+    console.log(dataR[i].review_count);
+  } */
+  console.log(
+    `Tiempo en segundos funcion ORDENAR RADIX array ${(endTimeR - startTimeR) / 1000}`
+  );
+
 });
