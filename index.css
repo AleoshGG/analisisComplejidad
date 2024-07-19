@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+}
+
+.text-principal {
+    background-color: aquamarine;
+    padding: 25px;
+    font-weight: bolder;
+}
+
+.text-principal_title1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 35px;
+    color: black;
+}
+
+
+/*Estilos css del componente de bootstrap (específicamente para minimizarlo) */
+.accordion {
+    max-width: 400px; 
+    margin-left: 0vh;
+}
+
+.accordion-button {
+    font-size: 14px; 
+    padding: 0.5rem 1rem; 
+    font-weight: bolder;
+}
+
+.accordion-body {
+    font-size: 12px; 
+    padding: 0.5rem 1rem;
+    font-weight: bolder;
+}
+
+.accordion-button:hover {
+    background-color: #ff1818; 
+    color: white; 
+  }
+  
