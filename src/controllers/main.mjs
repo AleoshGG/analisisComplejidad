@@ -1,7 +1,7 @@
 import { insertToArray, insertToList } from "./insertStructures.mjs";
 import { searchToArray, searchToList } from "./searchIn.mjs";
-import { bubleSort, mergeSort, radixSort } from "./arrayOrderBy.mjs";
-import { ary } from "../dependences/structures.mjs";
+import { bubbleSort, mergeSort, radixSort } from "./arrayOrderBy.mjs";
+import { ary, lL, lLB, lLM, lLR } from "../dependences/structures.mjs";
 
 const btnInsertar = document.getElementById("insertar");
 const btnBuscar = document.getElementById("buscar");
@@ -13,28 +13,28 @@ let searchData = { timeList: [], timeArray: [], timestamps: [] };
 
 const chartOptions = {
   series: [
-    { name: 'Tiempo Lista (Insertar)', data: insertData.timeList },
-    { name: 'Tiempo Array (Insertar)', data: insertData.timeArray },
-    { name: 'Tiempo Lista (Buscar)', data: searchData.timeList },
-    { name: 'Tiempo Array (Buscar)', data: searchData.timeArray }
+    { name: "Tiempo Lista (Insertar)", data: insertData.timeList },
+    { name: "Tiempo Array (Insertar)", data: insertData.timeArray },
+    { name: "Tiempo Lista (Buscar)", data: searchData.timeList },
+    { name: "Tiempo Array (Buscar)", data: searchData.timeArray },
   ],
   chart: {
-    type: 'bar',
-    height: 400
+    type: "bar",
+    height: 400,
   },
   xaxis: {
     categories: insertData.timestamps,
-    title: { text: 'Tiempo' }
+    title: { text: "Tiempo" },
   },
   yaxis: {
-    title: { text: 'Segundos' }
+    title: { text: "Segundos" },
   },
   plotOptions: {
-    bar: { horizontal: false }
+    bar: { horizontal: false },
   },
   title: {
-    text: 'Análisis de Tiempo'
-  }
+    text: "Análisis de Tiempo",
+  },
 };
 
 const chart = new ApexCharts(chartElement, chartOptions);
@@ -59,8 +59,8 @@ btnInsertar.addEventListener("click", async () => {
   insertData.timestamps.push(timestamp);
 
   chart.updateSeries([
-    { name: 'Tiempo Lista (Insertar)', data: insertData.timeList },
-    { name: 'Tiempo Array (Insertar)', data: insertData.timeArray }
+    { name: "Tiempo Lista (Insertar)", data: insertData.timeList },
+    { name: "Tiempo Array (Insertar)", data: insertData.timeArray },
   ]);
   chart.updateOptions({ xaxis: { categories: insertData.timestamps } });
 });
@@ -74,16 +74,20 @@ btnBuscar.addEventListener("click", () => {
   const review_count = parseInt(document.getElementById("buscarInput").value);
   const timestamp = new Date().toLocaleTimeString();
 
-  const dataReturnList =  searchToList(review_count);
+  const dataReturnList = searchToList(review_count);
   console.log(dataReturnList.data);
   console.log(
-    `Tiempo en segundos funcion BUSCAR lista ${dataReturnList.executionTime / 1000}`
+    `Tiempo en segundos funcion BUSCAR lista ${
+      dataReturnList.executionTime / 1000
+    }`
   );
 
-  const dataReturnAry =  searchToArray(review_count);
+  const dataReturnAry = searchToArray(review_count);
   console.log(dataReturnAry.data);
   console.log(
-    `Tiempo en segundos funcion BUSCAR array ${dataReturnAry.executionTime / 1000}`
+    `Tiempo en segundos funcion BUSCAR array ${
+      dataReturnAry.executionTime / 1000
+    }`
   );
 
   searchData.timeList.push(dataReturnList.executionTime / 1000);
@@ -91,28 +95,42 @@ btnBuscar.addEventListener("click", () => {
   searchData.timestamps.push(timestamp);
 
   chart.updateSeries([
-    { name: 'Tiempo Lista (Insertar)', data: insertData.timeList },
-    { name: 'Tiempo Array (Insertar)', data: insertData.timeArray },
-    { name: 'Tiempo Lista (Buscar)', data: searchData.timeList },
-    { name: 'Tiempo Array (Buscar)', data: searchData.timeArray }
+    { name: "Tiempo Lista (Insertar)", data: insertData.timeList },
+    { name: "Tiempo Array (Insertar)", data: insertData.timeArray },
+    { name: "Tiempo Lista (Buscar)", data: searchData.timeList },
+    { name: "Tiempo Array (Buscar)", data: searchData.timeArray },
   ]);
   chart.updateOptions({ xaxis: { categories: searchData.timestamps } });
 });
 
-btnOrdenar.addEventListener("click", ()=> {
-  const startTimeB = performance.now()
-  const dataB = bubleSort(ary);
+const llenarListas = () => {
+  for (let i = 0; i < lL.size(); i++) {
+    lLB.push(lL.getElementAt(i).getData());
+  }
+  for (let i = 0; i < lL.size(); i++) {
+    lLM.push(lL.getElementAt(i).getData());
+  }
+  for (let i = 0; i < lL.size(); i++) {
+    lLR.push(lL.getElementAt(i).getData());
+  }
+}
+
+btnOrdenar.addEventListener("click", () => {
+  const startTimeB = performance.now();
+  const dataB = bubbleSort(ary);
   const endTimeB = performance.now();
 
   // for (let i = 0; i < dataB.length; i++) {
   //   console.log(dataB[i].review_count);
   // }
-  
+
   console.log(
-    `Tiempo en segundos funcion ORDENAR BUBLE array ${(endTimeB - startTimeB) / 1000}`
+    `Tiempo en segundos funcion ORDENAR BUBLE array ${
+      (endTimeB - startTimeB) / 1000
+    }`
   );
 
-  const startTimeM = performance.now()
+  const startTimeM = performance.now();
   const dataM = mergeSort(ary);
   const endTimeM = performance.now();
 
@@ -120,10 +138,12 @@ btnOrdenar.addEventListener("click", ()=> {
     console.log(dataM[i].review_count);
   } */
   console.log(
-    `Tiempo en segundos funcion ORDENAR MERGE array ${(endTimeM - startTimeM) / 1000}`
+    `Tiempo en segundos funcion ORDENAR MERGE array ${
+      (endTimeM - startTimeM) / 1000
+    }`
   );
 
-  const startTimeR = performance.now()
+  const startTimeR = performance.now();
   const dataR = radixSort(ary);
   const endTimeR = performance.now();
 
@@ -131,7 +151,39 @@ btnOrdenar.addEventListener("click", ()=> {
     console.log(dataR[i].review_count);
   } */
   console.log(
-    `Tiempo en segundos funcion ORDENAR RADIX array ${(endTimeR - startTimeR) / 1000}`
+    `Tiempo en segundos funcion ORDENAR RADIX array ${
+      (endTimeR - startTimeR) / 1000
+    }`
   );
 
+  //llenarListas()
+
+  /* console.log(
+    `Tiempo en segundos funcion ORDENAR BUBBLE list ${lLB.bubbleSort()}`
+  ); */
+
+  const startTimeML = performance.now();
+  lL.mergeSort();
+  const endTimeML = performance.now();
+  console.log(
+    `Tiempo en segundos funcion ORDENAR MERGE list ${
+      (endTimeML - startTimeML) / 1000
+    }`
+  );
+  
+  /* for (let i = 0; i < lLM.size(); i++) {
+    console.log(lLM.getElementAt(i).getData().review_count);
+  } */
+
+    const startTimeRL = performance.now();
+    lLM.radixSort();
+    const endTimeRL = performance.now();
+    console.log(
+      `Tiempo en segundos funcion ORDENAR RADIX list ${
+        (endTimeRL - startTimeRL) / 1000
+      }`
+    );
+  /* for (let i = 0; i < lLR.size(); i++) {
+    console.log(lLR.getElementAt(i).getData().review_count);
+  } */
 });

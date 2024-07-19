@@ -2,9 +2,9 @@ export class Node {
   #data;
   #next;
 
-  constructor(data, weight) {
+  constructor(data) {
     this.#data = data;
-    this.#next = undefined;
+    this.#next = null;
   }
   getData() {
     return this.#data;
@@ -12,5 +12,9 @@ export class Node {
 
   getNext() {
     return this.#next;
+  }
+
+  setNext(next) {
+    this.#next = next;
   }
 }

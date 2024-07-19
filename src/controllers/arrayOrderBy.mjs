@@ -1,4 +1,4 @@
-export const bubleSort = (array) => {
+export const bubbleSort = (array) => {
   let aux = 0;
 
   for (let i = 0; i < array.length - 1; i++) {
@@ -45,7 +45,8 @@ export const radixSort = (array) => {
   const getMaxDigits = (arr) => {
     let max = 0;
     for (let i = 0; i < arr.length; i++) {
-      const digitCount = Math.floor(Math.log10(Math.abs(arr[i].review_count))) + 1;
+      const digitCount =
+        Math.floor(Math.log10(Math.abs(arr[i].review_count))) + 1;
       max = Math.max(max, digitCount);
     }
     return max;
@@ -70,4 +71,3 @@ export const radixSort = (array) => {
 
   return array;
 };
-
