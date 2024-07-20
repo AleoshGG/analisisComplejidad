@@ -15,7 +15,7 @@ body {
     color: black;
 }
 
-.buscarInput{
+.buscarInput {
     width: 100%; 
     height: 50px;
     padding: 13px;
@@ -23,49 +23,36 @@ body {
     border-radius: 10px;
 }
 
-.buscarInput::placeholder{
+.buscarInput::placeholder {
     font-size: 23px;
 }
 
-#chart {
-    position: relative;
-    width: 80%;
-    max-width: 600px;
-    height: 400px;
-    margin: 20px auto;
-    margin-bottom: 150px;
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px;
 }
 
-#charArray {
-    width: 80%;
-    max-width: 600px;
-    height: 400px;
-    margin: 20px auto;
-    padding-top: 10px;
+.accordion-container {
+    width: 400px; 
+    margin-right: 20px;
 }
 
-#charList {
-    width: 80%;
-    max-width: 600px;
-    height: 400px;
-    margin: 20px auto;
-    padding-top: 10px;
+.charts-container {
+    flex: 3;
+    padding-left: 20px;
 }
 
-#charSearch {
-    width: 80%;
+#chart, #charArray, #charList, #charSearch {
+    width: 100%;
     max-width: 600px;
     height: 400px;
-    margin: 20px auto;
-    padding-top: 10px;
+    margin-bottom: 20px;
 }
 
-
-
-/*Estilos css del componente de bootstrap (específicamente para minimizarlo) */
 .accordion {
-    max-width: 400px; 
-    margin-left: 0vh;
+    max-width: 100%;
 }
 
 .accordion-button {
@@ -83,5 +70,4 @@ body {
 .accordion-button:hover {
     background-color: #ff1818; 
     color: white; 
-  }
-  
+}
