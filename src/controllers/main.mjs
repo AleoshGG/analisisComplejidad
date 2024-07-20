@@ -3,11 +3,11 @@ import { searchToArray, searchToList } from "./searchIn.mjs";
 import { bubbleSort, mergeSort, radixSort } from "./arrayOrderBy.mjs";
 import { ary, lL, lLB, lLM, lLR } from "../dependences/structures.mjs";
 
-// Original chart
 const btnInsertar = document.getElementById("insertar");
 const btnBuscar = document.getElementById("buscar");
 const btnOrdenar = document.getElementById("ordenar");
 const chartElement = document.getElementById("chart");
+const searchChartElement = document.getElementById("charSearch");
 
 let insertData = { timeList: [], timeArray: [], timestamps: [] };
 let searchData = { timeList: [], timeArray: [], timestamps: [] };
@@ -16,8 +16,6 @@ const chartOptions = {
   series: [
     { name: "Tiempo Lista (Insertar)", data: insertData.timeList },
     { name: "Tiempo Array (Insertar)", data: insertData.timeArray },
-    { name: "Tiempo Lista (Buscar)", data: searchData.timeList },
-    { name: "Tiempo Array (Buscar)", data: searchData.timeArray },
   ],
   chart: {
     type: "bar",
@@ -34,14 +32,14 @@ const chartOptions = {
     bar: { horizontal: false },
   },
   title: {
-    text: "Análisis de Tiempo",
+    text: "Análisis de Tiempo de insercción",
   },
 };
 
 const chart = new ApexCharts(chartElement, chartOptions);
 chart.render();
 
-// New chart for Array sorting times
+
 const arrayChartElement = document.getElementById("charArray");
 const arrayChartOptions = {
   series: [
@@ -71,7 +69,7 @@ const arrayChartOptions = {
 const arrayChart = new ApexCharts(arrayChartElement, arrayChartOptions);
 arrayChart.render();
 
-// New chart for Linked List sorting times
+
 const listChartElement = document.getElementById("charList");
 const listChartOptions = {
   series: [
@@ -98,12 +96,40 @@ const listChartOptions = {
   },
 };
 
+const searchChartOptions = {
+  series: [
+    { name: "Tiempo Lista (Buscar)", data: searchData.timeList },
+    { name: "Tiempo Array (Buscar)", data: searchData.timeArray },
+  ],
+  chart: {
+    type: "bar",
+    height: 400,
+  },
+  xaxis: {
+    categories: searchData.timestamps,
+    title: { text: "Tiempo" },
+  },
+  yaxis: {
+    title: { text: "Segundos" },
+  },
+  plotOptions: {
+    bar: { horizontal: false },
+  },
+  title: {
+    text: "Análisis de Tiempo de Búsqueda",
+  },
+};
+
+const searchChart = new ApexCharts(searchChartElement, searchChartOptions);
+searchChart.render();
+
+
 const listChart = new ApexCharts(listChartElement, listChartOptions);
 listChart.render();
 
-// Function to fill Linked List with data
+
 const llenarListas = () => {
-  lLB.length = 0;  // Clear previous data
+  lLB.length = 0;  
   lLM.length = 0;
   lLR.length = 0;
 
@@ -115,7 +141,7 @@ const llenarListas = () => {
   }
 };
 
-// Event listeners
+
 btnInsertar.addEventListener("click", async () => {
   btnInsertar.disabled = true;
   const timestamp = new Date().toLocaleTimeString();
@@ -156,17 +182,15 @@ btnBuscar.addEventListener("click", () => {
   console.log(`Tiempo de búsqueda en lista: ${dataReturnList.executionTime / 1000} segundos`);
   console.log(`Tiempo de búsqueda en array: ${dataReturnAry.executionTime / 1000} segundos`);
 
-  chart.updateSeries([
-    { name: "Tiempo Lista (Insertar)", data: insertData.timeList },
-    { name: "Tiempo Array (Insertar)", data: insertData.timeArray },
+  searchChart.updateSeries([
     { name: "Tiempo Lista (Buscar)", data: searchData.timeList },
     { name: "Tiempo Array (Buscar)", data: searchData.timeArray },
   ]);
-  chart.updateOptions({ xaxis: { categories: searchData.timestamps } });
+  searchChart.updateOptions({ xaxis: { categories: searchData.timestamps } });
 });
 
 btnOrdenar.addEventListener("click", async () => {
-  // Array sorting
+
   const startTimeB = performance.now();
   bubbleSort(ary);
   const endTimeB = performance.now();
@@ -192,7 +216,7 @@ btnOrdenar.addEventListener("click", async () => {
   ]);
   arrayChart.updateOptions({ xaxis: { categories: [new Date().toLocaleTimeString()] } });
 
-  // Linked List sorting
+
   llenarListas();
 
   const startTimeBL = performance.now();
