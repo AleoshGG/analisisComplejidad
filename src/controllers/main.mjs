@@ -3,6 +3,7 @@ import { searchToArray, searchToList } from "./searchIn.mjs";
 import { bubbleSort, mergeSort, radixSort } from "./arrayOrderBy.mjs";
 import { ary, lL, lLB, lLM, lLR } from "../dependences/structures.mjs";
 
+// Original chart
 const btnInsertar = document.getElementById("insertar");
 const btnBuscar = document.getElementById("buscar");
 const btnOrdenar = document.getElementById("ordenar");
@@ -40,23 +41,94 @@ const chartOptions = {
 const chart = new ApexCharts(chartElement, chartOptions);
 chart.render();
 
+// New chart for Array sorting times
+const arrayChartElement = document.getElementById("charArray");
+const arrayChartOptions = {
+  series: [
+    { name: "Bubble Sort", data: [] },
+    { name: "Merge Sort", data: [] },
+    { name: "Radix Sort", data: [] },
+  ],
+  chart: {
+    type: "bar",
+    height: 400,
+  },
+  xaxis: {
+    categories: [],
+    title: { text: "Tiempo" },
+  },
+  yaxis: {
+    title: { text: "Segundos" },
+  },
+  plotOptions: {
+    bar: { horizontal: false },
+  },
+  title: {
+    text: "Tiempos de Ordenación de Array",
+  },
+};
+
+const arrayChart = new ApexCharts(arrayChartElement, arrayChartOptions);
+arrayChart.render();
+
+// New chart for Linked List sorting times
+const listChartElement = document.getElementById("charList");
+const listChartOptions = {
+  series: [
+    { name: "Bubble Sort", data: [] },
+    { name: "Merge Sort", data: [] },
+    { name: "Radix Sort", data: [] },
+  ],
+  chart: {
+    type: "bar",
+    height: 400,
+  },
+  xaxis: {
+    categories: [],
+    title: { text: "Tiempo" },
+  },
+  yaxis: {
+    title: { text: "Segundos" },
+  },
+  plotOptions: {
+    bar: { horizontal: false },
+  },
+  title: {
+    text: "Tiempos de Ordenación de Lista",
+  },
+};
+
+const listChart = new ApexCharts(listChartElement, listChartOptions);
+listChart.render();
+
+// Function to fill Linked List with data
+const llenarListas = () => {
+  lLB.length = 0;  // Clear previous data
+  lLM.length = 0;
+  lLR.length = 0;
+
+  for (let i = 0; i < lL.size(); i++) {
+    const data = lL.getElementAt(i).getData();
+    lLB.push(data);
+    lLM.push(data);
+    lLR.push(data);
+  }
+};
+
+// Event listeners
 btnInsertar.addEventListener("click", async () => {
   btnInsertar.disabled = true;
   const timestamp = new Date().toLocaleTimeString();
 
   const executionTimeToList = await insertToList();
-  console.log(
-    `Tiempo en segundos funcion INSERTAR lista ${executionTimeToList / 1000}`
-  );
-
   const executionTimeToAry = await insertToArray();
-  console.log(
-    `Tiempo en segundos funcion INSERTAR array ${executionTimeToAry / 1000}`
-  );
 
   insertData.timeList.push(executionTimeToList / 1000);
   insertData.timeArray.push(executionTimeToAry / 1000);
   insertData.timestamps.push(timestamp);
+
+  console.log(`Tiempo de inserción en lista: ${executionTimeToList / 1000} segundos`);
+  console.log(`Tiempo de inserción en array: ${executionTimeToAry / 1000} segundos`);
 
   chart.updateSeries([
     { name: "Tiempo Lista (Insertar)", data: insertData.timeList },
@@ -75,24 +147,14 @@ btnBuscar.addEventListener("click", () => {
   const timestamp = new Date().toLocaleTimeString();
 
   const dataReturnList = searchToList(review_count);
-  console.log(dataReturnList.data);
-  console.log(
-    `Tiempo en segundos funcion BUSCAR lista ${
-      dataReturnList.executionTime / 1000
-    }`
-  );
-
   const dataReturnAry = searchToArray(review_count);
-  console.log(dataReturnAry.data);
-  console.log(
-    `Tiempo en segundos funcion BUSCAR array ${
-      dataReturnAry.executionTime / 1000
-    }`
-  );
 
   searchData.timeList.push(dataReturnList.executionTime / 1000);
   searchData.timeArray.push(dataReturnAry.executionTime / 1000);
   searchData.timestamps.push(timestamp);
+
+  console.log(`Tiempo de búsqueda en lista: ${dataReturnList.executionTime / 1000} segundos`);
+  console.log(`Tiempo de búsqueda en array: ${dataReturnAry.executionTime / 1000} segundos`);
 
   chart.updateSeries([
     { name: "Tiempo Lista (Insertar)", data: insertData.timeList },
@@ -103,87 +165,58 @@ btnBuscar.addEventListener("click", () => {
   chart.updateOptions({ xaxis: { categories: searchData.timestamps } });
 });
 
-const llenarListas = () => {
-  for (let i = 0; i < lL.size(); i++) {
-    lLB.push(lL.getElementAt(i).getData());
-  }
-  for (let i = 0; i < lL.size(); i++) {
-    lLM.push(lL.getElementAt(i).getData());
-  }
-  for (let i = 0; i < lL.size(); i++) {
-    lLR.push(lL.getElementAt(i).getData());
-  }
-}
-
-btnOrdenar.addEventListener("click", () => {
+btnOrdenar.addEventListener("click", async () => {
+  // Array sorting
   const startTimeB = performance.now();
-  const dataB = bubbleSort(ary);
+  bubbleSort(ary);
   const endTimeB = performance.now();
-
-  // for (let i = 0; i < dataB.length; i++) {
-  //   console.log(dataB[i].review_count);
-  // }
-
-  console.log(
-    `Tiempo en segundos funcion ORDENAR BUBLE array ${
-      (endTimeB - startTimeB) / 1000
-    }`
-  );
+  const bubbleSortTimeAry = (endTimeB - startTimeB) / 1000;
+  console.log(`Tiempo de Bubble Sort en array: ${bubbleSortTimeAry} segundos`);
 
   const startTimeM = performance.now();
-  const dataM = mergeSort(ary);
+  mergeSort(ary);
   const endTimeM = performance.now();
-
-  /* for (let i = 0; i < dataM.length; i++) {
-    console.log(dataM[i].review_count);
-  } */
-  console.log(
-    `Tiempo en segundos funcion ORDENAR MERGE array ${
-      (endTimeM - startTimeM) / 1000
-    }`
-  );
+  const mergeSortTimeAry = (endTimeM - startTimeM) / 1000;
+  console.log(`Tiempo de Merge Sort en array: ${mergeSortTimeAry} segundos`);
 
   const startTimeR = performance.now();
-  const dataR = radixSort(ary);
+  radixSort(ary);
   const endTimeR = performance.now();
+  const radixSortTimeAry = (endTimeR - startTimeR) / 1000;
+  console.log(`Tiempo de Radix Sort en array: ${radixSortTimeAry} segundos`);
 
-  /* for (let i = 0; i < dataR.length; i++) {
-    console.log(dataR[i].review_count);
-  } */
-  console.log(
-    `Tiempo en segundos funcion ORDENAR RADIX array ${
-      (endTimeR - startTimeR) / 1000
-    }`
-  );
+  arrayChart.updateSeries([
+    { name: "Bubble Sort", data: [bubbleSortTimeAry] },
+    { name: "Merge Sort", data: [mergeSortTimeAry] },
+    { name: "Radix Sort", data: [radixSortTimeAry] },
+  ]);
+  arrayChart.updateOptions({ xaxis: { categories: [new Date().toLocaleTimeString()] } });
 
-  llenarListas()
+  // Linked List sorting
+  llenarListas();
 
-  console.log(
-    `Tiempo en segundos funcion ORDENAR BUBBLE list ${lLB.bubbleSort()}`
-  ); 
+  const startTimeBL = performance.now();
+  lLB.bubbleSort();
+  const endTimeBL = performance.now();
+  const bubbleSortTimeList = (endTimeBL - startTimeBL) / 1000;
+  console.log(`Tiempo de Bubble Sort en lista: ${bubbleSortTimeList} segundos`);
 
   const startTimeML = performance.now();
   lLM.mergeSort();
   const endTimeML = performance.now();
-  console.log(
-    `Tiempo en segundos funcion ORDENAR MERGE list ${
-      (endTimeML - startTimeML) / 1000
-    }`
-  );
-  
-  /* for (let i = 0; i < lLM.size(); i++) {
-    console.log(lLM.getElementAt(i).getData().review_count);
-  } */
+  const mergeSortTimeList = (endTimeML - startTimeML) / 1000;
+  console.log(`Tiempo de Merge Sort en lista: ${mergeSortTimeList} segundos`);
 
-    const startTimeRL = performance.now();
-    lLR.radixSort();
-    const endTimeRL = performance.now();
-    console.log(
-      `Tiempo en segundos funcion ORDENAR RADIX list ${
-        (endTimeRL - startTimeRL) / 1000
-      }`
-    );
-  /* for (let i = 0; i < lLR.size(); i++) {
-    console.log(lLR.getElementAt(i).getData().review_count);
-  } */
+  const startTimeRL = performance.now();
+  lLR.radixSort();
+  const endTimeRL = performance.now();
+  const radixSortTimeList = (endTimeRL - startTimeRL) / 1000;
+  console.log(`Tiempo de Radix Sort en lista: ${radixSortTimeList} segundos`);
+
+  listChart.updateSeries([
+    { name: "Bubble Sort", data: [bubbleSortTimeList] },
+    { name: "Merge Sort", data: [mergeSortTimeList] },
+    { name: "Radix Sort", data: [radixSortTimeList] },
+  ]);
+  listChart.updateOptions({ xaxis: { categories: [new Date().toLocaleTimeString()] } });
 });
